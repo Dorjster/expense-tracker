@@ -1,6 +1,6 @@
 import fs from "fs";
 const userDB =
-  "/Users/buyndorj/Desktop/incomeExpense/backend-Expense/models/users.json";
+  "/Users/23LP4507/Desktop/income/expense-tracker/backend-Expense/models/users.json";
 
 export const getUserbyEmail = async (req, res) => {
   try {

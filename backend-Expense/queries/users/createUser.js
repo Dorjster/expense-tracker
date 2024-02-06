@@ -2,7 +2,7 @@ import fs from "fs";
 import { makeHash } from "../../utils/password-hash.js";
 
 const userDB =
-  "/Users/buyndorj/Desktop/incomeExpense/backend-Expense/models/users.json";
+  "/Users/23LP4507/Desktop/income/expense-tracker/backend-Expense/models/users.json";
 
 export const createUser = async (req, res) => {
   const { username, email, password, repassword } = req.body;

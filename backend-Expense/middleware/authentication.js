@@ -1,6 +1,7 @@
 import fs from "fs";
+
 const userDB =
-  "/Users/buyndorj/Desktop/incomeExpense/backend-Expense/models/users.json";
+  "/Users/23LP4507/Desktop/income/expense-tracker/backend-Expense/models/users.json";
 import { compareHash } from "../utils/password-hash.js";
 
 export const authentication = async (req, res, next) => {
@@ -21,10 +22,15 @@ export const authentication = async (req, res, next) => {
       return;
     }
     const isitTrue = compareHash(password, foundUser.password);
+    // const getToken = () => {
+
+    // return token;
+    // };
 
     if (isitTrue === true) {
       next();
-
+      // res.send(token);
+      // console.log(token);
       return;
     } else {
       res

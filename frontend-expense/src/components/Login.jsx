@@ -20,6 +20,9 @@ const Login = () => {
       // if (result.data.success) {
       setUser(result.data);
       console.log(result.data);
+      // console.log(result.data.token);
+
+      localStorage.setItem("loginToken", JSON.stringify(result.data.token));
       router.push("/next");
       // } else {
       //   setError(result.response.message);
@@ -72,7 +75,6 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      
     </div>
   );
 };
