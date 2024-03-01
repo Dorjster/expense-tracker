@@ -15,7 +15,7 @@ export const LoginBox = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const { push } = useRouter();
-  const url = "http://localhost:4000/users/login";
+  const url = "http://localhost:4000/login";
 
   const handleJump = () => {
     push("/signup");
