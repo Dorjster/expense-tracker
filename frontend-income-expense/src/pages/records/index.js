@@ -5,13 +5,19 @@ import { RecordCol } from "@/components/RecordCol";
 import { CheckData } from "@/components/CheckData";
 import { MdHomeFilled } from "react-icons/md";
 import { PiForkKnifeFill } from "react-icons/pi";
+import { useContext } from "react";
+import { RecordModalContext } from "@/components/Providers/RecordProvider";
 
 import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 export default function Home() {
   const router = useRouter();
   const handleJump = async (e) => {
     router.push("/dashboard");
   };
+
+  const { showModal, setShowModal } = useContext(RecordModalContext);
+
   const data = [
     {
       icon: <MdHomeFilled size={22} color="#FFF" />,
@@ -115,7 +121,10 @@ export default function Home() {
           <p className="cursor-pointer font-bold">Records</p>
         </div>
         <div className="flex items-center gap-5">
-          <button className="btn btn-sm h-[35px] text-[15px] rounded-full bg-[#0166FF] font-semibold text-white px-5">
+          <button
+            onClick={() => setShowModal(true)}
+            className="btn btn-sm h-[35px] text-[15px] rounded-full bg-[#0166FF] font-semibold text-white px-5"
+          >
             + Record
           </button>
           <Image src="/Avatar.png" alt="avatar" width={40} height={40} />

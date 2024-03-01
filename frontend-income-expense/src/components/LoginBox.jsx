@@ -15,7 +15,7 @@ export const LoginBox = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const { push } = useRouter();
-  const url = "http://localhost:4000/login";
+  const url = "http://localhost:8000/users/login";
 
   const handleJump = () => {
     push("/signup");
@@ -32,17 +32,15 @@ export const LoginBox = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(url, userData).then((res) => {
-        console.log(res.data);
-        localStorage.setItem(`token`, res.data);
+      const { data } = await axios.post(url, userData);
+      localStorage.setItem(`token123`, data);
 
-        if (res.data === "Invalid email or password") {
-          setError(true);
-          setErrorMsg(res.data);
-        } else {
-          push("/dashboard");
-        }
-      });
+      if (data === "Invalid email or password") {
+        setError(true);
+        setErrorMsg(data);
+      } else {
+        push("/dashboard");
+      }
     } catch (error) {
       console.log(error);
     }

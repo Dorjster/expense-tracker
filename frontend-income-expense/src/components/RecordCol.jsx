@@ -6,8 +6,17 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Modal } from "./Modal";
 
+import { useContext } from "react";
+import { RecordModalContext } from "./Providers/RecordProvider";
+import { AddCategoryContext } from "./Providers/AddCategoryProvider";
+import { Cate } from "./CategoryLast";
+
 export const RecordCol = () => {
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const { showModal, setShowModal } = useContext(RecordModalContext);
+  const { showCategory, setShowCategory } = useContext(AddCategoryContext);
+  console.log(showCategory);
+
   const [count, setCount] = useState([0, 500]);
 
   const handleInput1 = (e) => {
@@ -16,7 +25,6 @@ export const RecordCol = () => {
   };
   const handleInput2 = (e) => {
     setCount([count[0], e.target.value]);
-    console.log(count[1]);
   };
   // const handleAddButtonClick = () => {
   //   setShowModal(true);
@@ -29,6 +37,7 @@ export const RecordCol = () => {
         <button
           onClick={() => {
             setShowModal(true);
+            setShowCategory(true);
           }}
           // onClick={() => document.getElementById("my_modal_4").showModal()}
           // onClick={handleAddButtonClick}
@@ -122,7 +131,17 @@ export const RecordCol = () => {
         </div>
       </div>
 
-      {showModal && <Modal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <Modal
+          onClose={() => setShowModal(false)}
+          setShowCategory={setShowCategory}
+        />
+      )}
+      {!showCategory && (
+        <div>
+          <Cate />
+        </div>
+      )}
     </div>
   );
 };

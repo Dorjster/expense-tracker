@@ -11,7 +11,7 @@ export const DashCard2 = (props) => {
         <hr className="w-[400px] -mx-5"></hr>
         <div className="mt-[15px] flex flex-col gap-4">
           <p className="font-bold text-[35px] ">{incomeAmmount}</p>
-          <p className="text-slate-400 text-[17px]">Your Income Ammount</p>
+          <p className="text-slate-400 text-[17px]">Your Expenses Ammount</p>
         </div>
         <div className="h-full flex items-center gap-2 justify-end mt-4">
           <FaCircleArrowDown color="#84CC16" size={20} />

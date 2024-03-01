@@ -13,7 +13,7 @@ export const SignUpThird = (props) => {
           <RiCoinsFill color="white" size={40} />
         </div>
         <h1 className="text-[30px] font-bold">Select base currency</h1>
-        <div className="w-full flex flex-col gap-2 items-center">
+        <div className="w-[400px] flex flex-col gap-2 items-center">
           <input
             className="input input-bordered w-full"
             type="number"
@@ -24,7 +24,7 @@ export const SignUpThird = (props) => {
           </p>
         </div>
         <button
-          className="btn btn-primary w-full rounded-[20px]"
+          className="btn btn-primary w-[400px] rounded-[20px]"
           onClick={nextHandle}
         >
           Confirm

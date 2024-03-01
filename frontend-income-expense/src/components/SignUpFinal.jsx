@@ -18,14 +18,14 @@ export const SignUpFinal = (props) => {
           <FaCheck color="white" size={40} />
         </div>
         <h1 className="text-[30px] font-bold">Good Job</h1>
-        <div className="w-full flex flex-col gap-2 items-center">
+        <div className="w-[400px] flex flex-col gap-2 items-center">
           <p className="text-[14px] text-gray-500 text-center">
             Your very first account has been created. Now continute to dashboard
             and start tracking.
           </p>
         </div>
         <button
-          className="btn btn-primary w-full rounded-[20px]"
+          className="btn btn-primary w-[400px] rounded-[20px]"
           onClick={nextHandle}
         >
           Go to Dashboard

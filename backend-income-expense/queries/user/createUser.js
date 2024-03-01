@@ -1,58 +1,35 @@
-import fs from "fs";
-import { makeHash } from "../../utils/passwordHash.js";
 import { client } from "../../index.js";
+import { makeHash } from "../../utils/passwordHash.js";
 
-const userDB =
-  "/Users/23LP4507/Desktop/untitled folder/income-expense/backend-income-expense/models/users.json";
-
-const createUser = async (email, password, username) => {
-  const userCreateQuery = `
-    INSERT INTO users(email,password,username) VALUES ($1,$2,$3) RETURNING id`;
-
-  const userID = await client.query(userCreateQuery, [
-    email,
-    password,
+const userCreate = async (username, email, password) => {
+  const createUserQuery = `
+    INSERT INTO users(username, email, password)
+    VALUES ($1, $2, $3 )
+    RETURNING id`;
+  const userId = await client.query(createUserQuery, [
     username,
+    email,
+    makeHash(password),
   ]);
 
-  return userID;
+  return userId;
 };
 
 export const createNewUser = async (req, res) => {
-  const { username, email: upEmail, password } = req.body;
-
+  const { username, email, password } = req.body;
+  const checkEmailQuery = `SELECT * FROM users WHERE email = $1`;
+  const existingUser = await client.query(checkEmailQuery, [email]);
+  console.log("after connect");
   try {
-    if (!username || !upEmail || !password) {
-      throw new Error("Please fill all the fields");
+    if (existingUser.rows.length > 0) {
+      return "User already exists";
     }
 
-    if (password.length < 5) {
-      console.log("password length");
-      throw new Error("Password must be at least 5 characters long");
-    }
+    const userId = await userCreate(username, email, password);
 
-    const newUserFile = await fs.readFileSync(userDB, "utf-8");
-
-    const data = JSON.parse(newUserFile);
-
-    if (data.find(({ email }) => email === upEmail)) {
-      console.log(data);
-      throw new Error("User already exists");
-    }
-
-    const Password = makeHash(password);
-
-    data.push({
-      username,
-      email: upEmail,
-      password: makeHash(password),
-    });
-
-    const userId = await createUser(upEmail, Password, username);
-    console.log(userId);
-    return userId;
-    return "User created successfully";
+    return;
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Error creating user:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };

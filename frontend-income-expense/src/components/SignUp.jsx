@@ -31,7 +31,7 @@ export const SignUp = (props) => {
   const [passerror, setPasserror] = useState(false);
 
   const { push } = useRouter();
-  const url = "http://localhost:4000/signup";
+  const url = "http://localhost:8000/users";
 
   const handleJump = async (e) => {
     push("/login");
@@ -165,7 +165,9 @@ export const SignUp = (props) => {
               </div>
             </div>
             {passerror && (
-              <p className="text-red-500 text-center">Passwords do not match</p>
+              <p className="text-red-500 text-center">
+                •Passwords do not match
+              </p>
             )}
             {error && <p className="text-red-500 text-center">{errorMsg}</p>}
 

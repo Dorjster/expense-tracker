@@ -2,30 +2,98 @@ import React from "react";
 
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
+import { IoIosAddCircle } from "react-icons/io";
+import { FaGift } from "react-icons/fa";
+import { MdHomeFilled } from "react-icons/md";
+import { PiForkKnifeFill } from "react-icons/pi";
+import { BiSolidDrink } from "react-icons/bi";
+import { PiTaxiFill } from "react-icons/pi";
+import { FaShoppingBag } from "react-icons/fa";
+import axios from "axios";
 
-export const Modal = ({ onClose }) => {
+import { useContext } from "react";
+import { RecordModalContext } from "./Providers/RecordProvider";
+// import AddCategoryProvider, {
+//   AddCategoryContext,
+// } from "./Providers/AddCategoryProvider";
+
+export const Modal = ({ onClose, setShowCategory }) => {
+  const { showModal, setShowModal } = useContext(RecordModalContext);
+  // const { showCategory, setShowCategory } = useContext(AddCategoryContext);
   const [button, setButton] = useState(true);
   const [value, setValue] = useState("Income");
+  const [valueD, setValueD] = useState("Home");
   const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const [payee, setPayee] = useState("");
+  const [payee, setPayee] = useState("write");
   const [note, setNote] = useState("");
+  const [recordData, setRecordData] = useState({
+    recordType: "Income",
+    amount: "",
+    category: "Home",
+    payee: "Write",
+    note: "",
+  });
+
+  const url = "http://localhost:8000/record/create-record";
 
   const handleClick = () => {
     setButton(!button);
+  };
+
+  const handlerClickPros = () => {
+    setShowModal(false);
+    setShowCategory(false);
   };
 
   const handleGetValue = (value) => {
     setValue(value);
     console.log(value);
   };
+  const handleGetValueD = (valueD) => {
+    setValueD(valueD);
+    console.log(valueD);
+  };
 
   const handleAddRecord = () => {
+    setRecordData({
+      recordType: value,
+      amount: amount,
+      category: valueD,
+      payee: payee,
+      note: note,
+    });
+    console.log("recordType:", value);
     console.log("Amount:", amount);
-    console.log("Category:", category);
+    console.log("category:", valueD);
     console.log("Payee:", payee);
     console.log("Note:", note);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    handleAddRecord();
+    if (!recordData.amount || !recordData.note) {
+      alert("Please fill all the fields");
+    } else {
+      try {
+        console.log("before post");
+        const response = await axios.post(url, recordData);
+        console.log("Response:", response.data);
+      } catch (error) {
+        if (error.response) {
+          console.error("Server Error:", error.response.data);
+        } else if (error.request) {
+          console.error("Request Error:", error.request);
+        } else {
+          console.error("Error:", error.message);
+        }
+        setErrorMsg("An error occurred while processing your request.");
+        setError(true);
+      }
+    }
   };
 
   return (
@@ -54,7 +122,6 @@ export const Modal = ({ onClose }) => {
                   backgroundColor: button ? "#0166FF" : "#F3F4F6",
                   color: button ? "white" : "black",
                 }}
-                value="Income"
                 onClick={() => {
                   handleClick();
                   handleGetValue("Income");
@@ -68,7 +135,6 @@ export const Modal = ({ onClose }) => {
                   backgroundColor: button ? "#F3F4F6" : "#16A34A",
                   color: button ? "black" : "white",
                 }}
-                value="Expense"
                 onClick={() => {
                   handleClick();
                   handleGetValue("Expense");
@@ -82,26 +148,90 @@ export const Modal = ({ onClose }) => {
               <input
                 type="number"
                 placeholder="₮ 000.00"
+                className="bg-slate-100 p-5 absolute top-0 h-[76px] rounded-xl w-full pt-12"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="bg-slate-100 p-5 absolute top-0 h-[76px] rounded-xl w-full pt-12"
               />
             </div>
             <div className="mt-6 w-full py-5 flex flex-col gap-2">
               <label className="">Category</label>
               <div className="flex flex-col gap-2">
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="select w-full bg-slate-100 "
-                >
-                  <option selected>Choose</option>
-                  <option>Write Here</option>
-                  <option>Write Here</option>
-                  <option>Write Here</option>
-                  <option>Write Here</option>
-                  <option>Write Here</option>
-                </select>
+                <div className="dropdown">
+                  <div tabIndex={0} role="button" className="btn m-1">
+                    Find or Choose Category
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52  overflow-scroll"
+                    style={{ maxHeight: "200px" }}
+                  >
+                    {/* <div className="flex items-center">
+                      <li>
+                        <button
+                          onClick={() => handlerClickPros()}
+                          className="btn btn-sm h-[35px] text-[15px] rounded-xl"
+                        >
+                          {" "}
+                          <IoIosAddCircle /> Add Category
+                        </button>
+                      </li>
+                    </div> */}
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleGetValueD("Home");
+                        }}
+                      >
+                        <MdHomeFilled /> Home
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleGetValueD("Gift");
+                        }}
+                      >
+                        <FaGift /> Gift
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleGetValueD("Food");
+                        }}
+                      >
+                        <PiForkKnifeFill /> Food
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleGetValueD("Drink");
+                        }}
+                      >
+                        <BiSolidDrink /> Drink
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleGetValueD("Taxi");
+                        }}
+                      >
+                        <PiTaxiFill /> Taxi
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleGetValueD("Shopping");
+                        }}
+                      >
+                        <FaShoppingBag /> Shopping
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -124,10 +254,12 @@ export const Modal = ({ onClose }) => {
             <button
               className="rounded-full bg-[#0166FF] w-full text-white text-[15px] px-[10px] py-2 mt-[46px]"
               style={{ backgroundColor: button ? "#0166FF" : "#16A34A" }}
+              onClick={handleSubmit}
             >
               Add Record
             </button>
           </div>
+
           <div className="w-[48%] flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <p>Payee</p>
@@ -137,21 +269,21 @@ export const Modal = ({ onClose }) => {
                 className="select w-full bg-slate-100"
               >
                 <option selected>Write Here</option>
-                <option>Write Here</option>
-                <option>Write Here</option>
-                <option>Write Here</option>
-                <option>Write Here</option>
-                <option>Write Here</option>
+                <option>Home</option>
+                <option>Food</option>
+                <option>Taxi</option>
+                <option>Gift</option>
+                <option>Drink</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
               <p>Note</p>
               <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
                 className="textarea w-full bg-slate-100 h-[268px]"
                 style={{ resize: "none" }}
                 placeholder="Write Here"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
               ></textarea>
             </div>
           </div>

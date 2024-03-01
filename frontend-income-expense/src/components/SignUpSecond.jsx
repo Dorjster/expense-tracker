@@ -1,5 +1,7 @@
 import { Steps } from "@/components/Steps";
 import { FaMoneyBill } from "react-icons/fa";
+
+
 export const SignUpSecond = (props) => {
   const { stage = 1, nextHandle } = props;
   return (
@@ -13,8 +15,8 @@ export const SignUpSecond = (props) => {
           <FaMoneyBill color="white" size={40} />
         </div>
         <h1 className="text-[30px] font-bold">Select base currency</h1>
-        <div className="w-full flex flex-col gap-2 items-center">
-          <select className="select w-full max-w-xs bg-gray-100 outline-none">
+        <div className="w-[400px] flex flex-col gap-2 items-center">
+          <select className="select w-[400px] max-w-xs bg-gray-100 outline-none">
             <option selected>MNT - Mongolian Tugrik</option>
             <option>USD - United States Dollar</option>
             <option>EUR - Euro</option>
@@ -28,7 +30,7 @@ export const SignUpSecond = (props) => {
           </p>
         </div>
         <button
-          className="btn btn-primary w-full rounded-[20px]"
+          className="btn btn-primary w-[400px] rounded-[20px]"
           onClick={nextHandle}
         >
           Confirm
